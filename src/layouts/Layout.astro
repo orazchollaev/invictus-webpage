@@ -2,11 +2,18 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Invictus — Tournament Maker</title>
+		<meta name="description" content="Invictus, turnuvalarını kolayca oluştur ve yönet. Google Play'de indir." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<slot />
@@ -19,5 +26,6 @@
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
 	}
 </style>
