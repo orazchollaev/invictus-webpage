@@ -1,46 +1,32 @@
-# Astro Starter Kit: Basics
+# Invictus Landing Page
 
-```sh
-pnpm create astro@latest -- --template basics
+Simple single-page landing page for the Invictus Tournament Maker app. Built with Astro.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Build
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```bash
+pnpm build
+pnpm preview
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Deploy
 
-## 🧞 Commands
+Hosted on Firebase Hosting.
 
-All commands are run from the root of the project, from a terminal:
+```bash
+pnpm build
+firebase deploy
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Structure
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/pages/index.astro` — main page
+- `src/layouts/Layout.astro` — shared layout, fonts
+- `public/` — static assets (favicon, icons, screenshot, robots.txt, sitemap.xml)
