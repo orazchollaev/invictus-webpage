@@ -2,6 +2,49 @@
 import Layout from '../layouts/Layout.astro';
 
 const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchollaev.invictustournamentmaker';
+
+const formats = [
+	{
+		title: 'Knockout',
+		text: 'Single-elimination bracket with one or two-legged ties, aggregate scoring, penalty shootouts, and an optional third-place match.',
+	},
+	{
+		title: 'Group + Knockout',
+		text: 'Round-robin groups feed a knockout bracket, with automatic cross-seeding, wildcards, and no-rematch or random draw modes.',
+	},
+	{
+		title: 'League',
+		text: 'Full or half-length round-robin season, up to 10 tiers with promotion and relegation, plus an optional playoff to crown a champion.',
+	},
+	{
+		title: 'Swiss',
+		text: 'Champions League–style format: fixed rounds against opponents matched by standing, then the top finishers advance to a knockout.',
+	},
+];
+
+const playStyles = [
+	{
+		title: 'Simulate',
+		text: 'Fill in scores yourself, or simulate a match, a matchday, or the whole tournament based on each team’s power rating. Tune Surprise Factor, Home Advantage, and Form to change how predictable results are.',
+	},
+	{
+		title: 'Watch it live',
+		text: 'Play matches out minute by minute with goals, shots, xG, cards, injuries, and substitutions. Ties go to real extra time and a kick-by-kick penalty shootout.',
+	},
+	{
+		title: 'Manage a team',
+		text: 'Pick a team and run its season yourself: set formation and play style, choose your XI — or let the app auto-pick — and make live substitutions.',
+	},
+];
+
+const features = [
+	{ title: 'Teams & players', text: 'Build rosters with colors, power ratings, and coaches; bulk-generate players from an editable name pool.' },
+	{ title: 'Multiple seasons', text: 'Run it back with New Season — random, seeded, or manual draws, with every season kept.' },
+	{ title: 'History & stats', text: 'Champions, all-time tables, biggest wins, title streaks, and per-team records across every season.' },
+	{ title: '15 languages', text: 'English, Turkish, German, French, Arabic, Spanish, Portuguese, Russian, Japanese, Korean, Thai, Vietnamese, Polish, Indonesian, Hindi.' },
+	{ title: 'Themes', text: 'Light, Dark, or a World Cup 2026 theme, with Classic or Double-Sided bracket layouts.' },
+	{ title: 'Export & import', text: 'Save all your teams and tournaments to a file and restore them anytime.' },
+];
 ---
 
 <Layout>
@@ -9,7 +52,9 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 		<div class="panel panel-primary">
 			<div class="panel-primary-content">
 				<p class="description">
-					Invictus Tournament Maker <br/> build and run your own football (soccer) tournaments, leagues, and knockout brackets, right from your phone.				</p>
+					Invictus Tournament Maker <br /> build and run your own football (soccer) tournaments, leagues, and knockout
+					brackets, right from your phone.
+				</p>
 				<a class="cta" href={playStoreUrl}>
 					<img src="/google-play-store-icon.webp" alt="" width="20" height="20" />
 					Get it on Google Play
@@ -25,7 +70,64 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 			<img class="bracket-shot" src="/bracket.png" alt="Invictus bracket screen" />
 		</div>
 	</main>
+
+	<section class="section">
+		<h2>One app, four tournament formats</h2>
+		<div class="grid grid-4">
+			{
+				formats.map((f) => (
+					<div class="card">
+						<h3>{f.title}</h3>
+						<p>{f.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<h2>Play it your way</h2>
+		<div class="grid grid-3">
+			{
+				playStyles.map((p) => (
+					<div class="card">
+						<h3>{p.title}</h3>
+						<p>{p.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section">
+		<h2>Everything you need to run a competition</h2>
+		<div class="grid grid-3">
+			{
+				features.map((f) => (
+					<div class="card card-compact">
+						<h3>{f.title}</h3>
+						<p>{f.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section section-alt cta-section">
+		<h2>Free on Android — and works in your browser too</h2>
+		<p class="cta-text">All data is stored locally and survives page refreshes. No account needed.</p>
+		<a class="cta cta-large" href={playStoreUrl}>
+			<img src="/google-play-store-icon.webp" alt="" width="22" height="22" />
+			Get it on Google Play
+		</a>
+	</section>
+
+	<footer class="footer">
+		<span>Invictus Tournament Maker</span>
+		<span>&copy; {new Date().getFullYear()}</span>
+	</footer>
 </Layout>
+
 
 <style>
 	:global(html),
@@ -36,6 +138,7 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 	.hero {
 		position: relative;
 		height: 100dvh;
+		min-height: 560px;
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -69,7 +172,6 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 		padding: 0 5vw 0 5vw;
 		margin-right: 10vw;
 	}
-
 
 	.description {
 		margin: 0 0 2.25rem;
@@ -148,10 +250,114 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 		object-position: top;
 	}
 
+	/* Content sections below the fold */
+
+	.section {
+		font-family: 'IBM Plex Sans', system-ui, sans-serif;
+		padding: 5rem 6vw;
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	.section-alt {
+		max-width: none;
+		background: #e2e6e0;
+	}
+
+	.section-alt > * {
+		max-width: 1100px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.section h2 {
+		margin: 0 0 2.5rem;
+		font-size: clamp(1.5rem, 2.4vw, 2rem);
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		color: #1e211f;
+		text-align: center;
+	}
+
+	.grid {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.grid-4 {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.grid-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.card {
+		background: #fff;
+		border-radius: 12px;
+		padding: 1.75rem 1.5rem;
+		box-shadow: 0 1px 2px rgba(30, 33, 31, 0.06);
+	}
+
+	.section-alt .card {
+		background: #eceeea;
+	}
+
+	.card h3 {
+		margin: 0 0 0.6rem;
+		font-size: 1.05rem;
+		font-weight: 600;
+		color: #0b7264;
+	}
+
+	.card p {
+		margin: 0;
+		font-size: 0.92rem;
+		line-height: 1.55;
+		color: #454945;
+	}
+
+	.card-compact {
+		padding: 1.5rem 1.35rem;
+	}
+
+	.cta-section {
+		text-align: center;
+	}
+
+	.cta-text {
+		margin: 0 0 2rem;
+		color: #454945;
+		font-size: 1rem;
+	}
+
+	.cta-large {
+		background: #0b7264;
+		color: #eceeea;
+		padding: 1.05rem 2rem;
+		font-size: 1rem;
+	}
+
+	.cta-large:hover {
+		background: #095c51;
+	}
+
+	.footer {
+		display: flex;
+		justify-content: space-between;
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 2rem 6vw 3rem;
+		font-family: 'IBM Plex Sans', system-ui, sans-serif;
+		font-size: 0.85rem;
+		color: #5b6b66;
+	}
+
 	@media (max-width: 860px) {
 		.hero {
 			grid-template-columns: 1fr;
 			grid-template-rows: 65% 35%;
+			min-height: 0;
 		}
 
 		.panel-primary {
@@ -161,7 +367,7 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 			order: 2;
 		}
 
-		.description{
+		.description {
 			font-size: 1.2rem;
 			margin-bottom: 1rem;
 		}
@@ -183,6 +389,21 @@ const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchol
 
 		.bracket-shot {
 			max-height: 34dvh;
+		}
+
+		.section {
+			padding: 3.5rem 6vw;
+		}
+
+		.grid-4,
+		.grid-3 {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (min-width: 861px) and (max-width: 1080px) {
+		.grid-4 {
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
