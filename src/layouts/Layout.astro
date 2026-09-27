@@ -1,16 +1,32 @@
+---
+import '../styles/landing.css';
+
+interface Props {
+	title: string;
+	description: string;
+	favicon?: string;
+	image?: string;
+}
+
+const { title, description, favicon = '/favicon.svg', image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={favicon} />
 		<meta name="generator" content={Astro.generator} />
-		<title>Invictus - Tournament Maker</title>
-		<meta
-			name="description"
-			content="Invictus Tournament Maker — build knockouts, groups, leagues and Swiss-style football tournaments, simulate or play matches live, and track history across seasons. Free on Google Play."
-		/>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		{image && <meta property="og:image" content={new URL(image, Astro.site)} />}
 		<meta name="google-site-verification" content="DWdEqOuGtj1rPyzeENXiHw1RMuZ7YZcCUbj69frFhJA" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,11 +39,3 @@
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-	}
-</style>

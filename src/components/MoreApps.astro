@@ -1,0 +1,22 @@
+---
+interface Props {
+	name: string;
+	text: string;
+	href: string;
+	logo: string;
+}
+
+const { name, text, href, logo } = Astro.props;
+---
+
+<section class="section more-apps">
+	<h2>More from Invictus</h2>
+	<a class="more-app" href={href}>
+		<img src={logo} alt="" width="72" height="72" />
+		<span class="more-app-text">
+			<strong>{name}</strong>
+			<span>{text}</span>
+		</span>
+		<span class="more-app-arrow" aria-hidden="true">→</span>
+	</a>
+</section>

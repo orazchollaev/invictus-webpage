@@ -1,6 +1,9 @@
-# Invictus Landing Page
+# Invictus Landing Pages
 
-Simple single-page landing page for the Invictus Tournament Maker app. Built with Astro.
+Landing pages for the Invictus apps. Built with Astro.
+
+- `/` — Invictus Tournament Maker
+- `/national-manager/` — Invictus National Manager
 
 ## Development
 
@@ -27,6 +30,10 @@ firebase deploy
 
 ## Structure
 
-- `src/pages/index.astro` — main page
-- `src/layouts/Layout.astro` — shared layout, fonts
+- `src/pages/index.astro` — Tournament Maker page
+- `src/pages/national-manager.astro` — National Manager page
+- `src/components/` — shared nav between the apps and the "More from Invictus" block
+- `src/layouts/Layout.astro` — shared layout (title, description, favicon, fonts)
+- `src/styles/landing.css` — styles shared by both pages
 - `public/` — static assets (favicon, icons, screenshot, robots.txt, sitemap.xml)
+- `public/national-manager/` — National Manager logo, favicon and screenshots
