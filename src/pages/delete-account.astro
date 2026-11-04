@@ -7,42 +7,46 @@ const subject = encodeURIComponent('Invictus data deletion request');
 
 const steps = [
 	{
-		title: 'Delete data stored on your device',
-		text: 'Open Android Settings, go to Apps, choose Invictus Tournament Maker (or Invictus National Manager), tap Storage and then Clear data. Or simply uninstall the app. This removes all tournaments, teams, save slots and settings.',
+		title: 'Email us from your Google account',
+		text: 'Send a deletion request from the email address of the Google account you signed in with, or tell us that address in the message. Use the button below.',
 	},
 	{
-		title: 'Reset the advertising ID (optional)',
-		text: 'In Android Settings open Google, then Ads, and choose Delete advertising ID or Reset advertising ID.',
+		title: 'We delete your account and shared content',
+		text: 'We delete your Invictus account together with everything linked to it, including datasets you shared, and confirm by email within 30 days.',
 	},
 	{
-		title: 'Ask us to delete anything we hold',
-		text: 'Email us at the address below from the Play Store listing page or with the device details you can share. We will confirm and erase any data linked to your request.',
+		title: 'Clear data on your device (optional)',
+		text: 'Open Android Settings, go to Apps, choose the Invictus app, tap Storage and then Clear data, or uninstall the app. This removes tournaments, teams and settings stored locally.',
 	},
 ];
 
 const data = [
 	{
+		title: 'Account data (Google sign-in)',
+		text: 'When you sign in with Google we store your Google account ID, name, email address and profile photo through Firebase Authentication. Kept until you ask us to delete the account, then erased within 30 days.',
+	},
+	{
+		title: 'Content you share',
+		text: 'Datasets (teams and players) you publish to the market, with their name, description and your account ID. Deleted together with your account. Copies other users already saved on their own devices stay on those devices.',
+	},
+	{
 		title: 'Stored on your device only',
-		text: 'Tournaments, teams, players, results, save slots, language and app settings. We never receive them, so we cannot see or delete them remotely. Clearing app data or uninstalling deletes them for good.',
+		text: 'Tournaments, results, save slots, language and settings never leave your device. Clearing app data or uninstalling deletes them for good.',
 	},
 	{
 		title: 'Usage analytics',
-		text: 'Anonymous app events and screen views through Firebase Analytics, linked to a random app instance ID, not to your name or email. Retained by Google Analytics for up to 14 months, then deleted automatically.',
+		text: 'Anonymous app events through Firebase Analytics, tied to a random app instance ID. Retained by Google Analytics for up to 14 months, then deleted automatically.',
 	},
 	{
-		title: 'Push notification token',
-		text: 'A device token from Firebase Cloud Messaging, used only to deliver notifications. It is invalidated when you uninstall the app or turn off notifications.',
-	},
-	{
-		title: 'Advertising data',
-		text: 'Google AdMob may use your advertising ID to show ads. This is held by Google under its own policy and can be reset or deleted in your Android settings.',
+		title: 'Push token and advertising ID',
+		text: 'A Firebase Cloud Messaging token for notifications is invalidated when you uninstall the app. Google AdMob may use your advertising ID, which you can reset or delete in Android Settings under Google, Ads.',
 	},
 ];
 ---
 
 <Layout
 	title="Delete your data | Invictus"
-	description="How to delete your data from Invictus apps, including Invictus Tournament Maker and Invictus National Manager."
+	description="How to delete your Invictus account and data, including your Google sign-in details and shared datasets."
 >
 	<SiteNav current="tournament-maker" />
 
@@ -52,10 +56,10 @@ const data = [
 	</header>
 
 	<section class="section">
-		<h2>No account, no sign-up</h2>
+		<h2>Your account and your data</h2>
 		<p class="section-lead">
-			Invictus apps do not ask you to create an account, so there is no account to close. Your tournaments and saves live on
-			your device. Use the steps below to remove them, or to ask us to erase anything linked to you.
+			Invictus Tournament Maker lets you sign in with Google to share and download datasets. Invictus National Manager has no
+			accounts: its saves stay on your device. Request deletion below to remove your account and the data linked to it.
 		</p>
 	</section>
 
