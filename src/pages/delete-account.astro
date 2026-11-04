@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteNav from '../components/SiteNav.astro';
+
+const email = 'abdyllayewylham@gmail.com';
+const subject = encodeURIComponent('Invictus data deletion request');
+
+const steps = [
+	{
+		title: 'Delete data stored on your device',
+		text: 'Open Android Settings, go to Apps, choose Invictus Tournament Maker (or Invictus National Manager), tap Storage and then Clear data. Or simply uninstall the app. This removes all tournaments, teams, save slots and settings.',
+	},
+	{
+		title: 'Reset the advertising ID (optional)',
+		text: 'In Android Settings open Google, then Ads, and choose Delete advertising ID or Reset advertising ID.',
+	},
+	{
+		title: 'Ask us to delete anything we hold',
+		text: 'Email us at the address below from the Play Store listing page or with the device details you can share. We will confirm and erase any data linked to your request.',
+	},
+];
+
+const data = [
+	{
+		title: 'Stored on your device only',
+		text: 'Tournaments, teams, players, results, save slots, language and app settings. We never receive them, so we cannot see or delete them remotely. Clearing app data or uninstalling deletes them for good.',
+	},
+	{
+		title: 'Usage analytics',
+		text: 'Anonymous app events and screen views through Firebase Analytics, linked to a random app instance ID, not to your name or email. Retained by Google Analytics for up to 14 months, then deleted automatically.',
+	},
+	{
+		title: 'Push notification token',
+		text: 'A device token from Firebase Cloud Messaging, used only to deliver notifications. It is invalidated when you uninstall the app or turn off notifications.',
+	},
+	{
+		title: 'Advertising data',
+		text: 'Google AdMob may use your advertising ID to show ads. This is held by Google under its own policy and can be reset or deleted in your Android settings.',
+	},
+];
+---
+
+<Layout
+	title="Delete your data | Invictus"
+	description="How to delete your data from Invictus apps, including Invictus Tournament Maker and Invictus National Manager."
+>
+	<SiteNav current="tournament-maker" />
+
+	<section class="hero">
+		<h1>Delete your Invictus data</h1>
+		<p class="hero-lead">
+			Applies to Invictus Tournament Maker and Invictus National Manager by Invictus (developer: Oraz Chollaev).
+		</p>
+	</section>
+
+	<section class="section">
+		<h2>No account, no sign-up</h2>
+		<p class="section-lead">
+			Invictus apps do not ask you to create an account, so there is no account to close. Your tournaments and saves live on
+			your device. Use the steps below to remove them, or to ask us to erase anything linked to you.
+		</p>
+	</section>
+
+	<section class="section section-alt">
+		<h2>How to request deletion</h2>
+		<div class="grid grid-3">
+			{
+				steps.map((s, i) => (
+					<div class="card card-compact">
+						<h3>
+							{i + 1}. {s.title}
+						</h3>
+						<p>{s.text}</p>
+					</div>
+				))
+			}
+		</div>
+		<p class="cta-text">
+			<a class="cta cta-large" href={`mailto:${email}?subject=${subject}`}>Email {email}</a>
+		</p>
+		<p class="cta-text">We reply within 30 days and delete the data you ask about.</p>
+	</section>
+
+	<section class="section">
+		<h2>What is stored and for how long</h2>
+		<div class="grid grid-3">
+			{
+				data.map((d) => (
+					<div class="card card-compact">
+						<h3>{d.title}</h3>
+						<p>{d.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<footer class="footer">
+		<span>Invictus</span>
+		<span>&copy; {new Date().getFullYear()}</span>
+	</footer>
+</Layout>
