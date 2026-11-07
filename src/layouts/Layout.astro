@@ -1,14 +1,17 @@
 ---
-import '../styles/landing.css';
+import '../styles/site.css';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
 	title: string;
 	description: string;
 	favicon?: string;
 	image?: string;
+	current?: 'tournament-maker' | 'national-manager';
 }
 
-const { title, description, favicon = '/favicon.svg', image } = Astro.props;
+const { title, description, favicon = '/favicon.svg', image, current } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -22,6 +25,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
+		<meta name="theme-color" content="#f2f3ef" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#0f1312" media="(prefers-color-scheme: dark)" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -31,11 +36,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@700&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
 	</head>
 	<body>
-		<slot />
+		<a class="skip" href="#main">Skip to content</a>
+		<SiteNav current={current} />
+		<main id="main">
+			<slot />
+		</main>
+		<SiteFooter />
+		<script>
+			const nav = document.querySelector('.nav');
+			const update = () => nav?.toggleAttribute('data-scrolled', window.scrollY > 8);
+			update();
+			window.addEventListener('scroll', update, { passive: true });
+		</script>
 	</body>
 </html>

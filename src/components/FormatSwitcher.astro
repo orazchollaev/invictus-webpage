@@ -1,0 +1,567 @@
+---
+// Interactive tour of the tournament formats, each drawn as a small diagram.
+
+const W = 376;
+
+// Knockout: 8 teams, one highlighted path to the trophy.
+const koCols = [8, 104, 200, 296];
+const koW = 72;
+const koH = 20;
+const koRounds: number[][] = [Array.from({ length: 8 }, (_, i) => 20 + i * 26)];
+while (koRounds.at(-1)!.length > 1) {
+	const prev = koRounds.at(-1)!;
+	koRounds.push(prev.filter((_, i) => i % 2 === 0).map((y, i) => (y + prev[i * 2 + 1]) / 2));
+}
+const koPath = [2, 1, 0, 0];
+const koLinks: string[] = [];
+const koHotLinks: string[] = [];
+koRounds.slice(0, -1).forEach((ys, r) => {
+	const x1 = koCols[r] + koW;
+	const x2 = koCols[r + 1];
+	const xm = (x1 + x2) / 2;
+	for (let i = 0; i < ys.length; i += 2) {
+		const yMid = koRounds[r + 1][i / 2];
+		koLinks.push(`M${x1} ${ys[i]}H${xm}V${ys[i + 1]}H${x1}M${xm} ${yMid}H${x2}`);
+		if (koPath[r] === i || koPath[r] === i + 1) {
+			koHotLinks.push(`M${x1} ${ys[koPath[r]]}H${xm}V${yMid}H${x2}`);
+		}
+	}
+});
+
+// Groups + knockout: four groups of four, top two go through.
+const groups = [
+	{ x: 8, y: 26, label: 'A' },
+	{ x: 100, y: 26, label: 'B' },
+	{ x: 8, y: 128, label: 'C' },
+	{ x: 100, y: 128, label: 'D' },
+];
+const gW = 84;
+const gRow = 15;
+const gkCols = [204, 264, 324];
+const gkW = 44;
+const gkH = 28;
+const gkYs = [
+	[36, 86, 136, 186],
+	[61, 161],
+	[111],
+];
+const gkLinks: string[] = [];
+gkYs.slice(0, -1).forEach((ys, r) => {
+	const x1 = gkCols[r] + gkW;
+	const x2 = gkCols[r + 1];
+	const xm = (x1 + x2) / 2;
+	for (let i = 0; i < ys.length; i += 2) {
+		gkLinks.push(`M${x1} ${ys[i]}H${xm}V${ys[i + 1]}H${x1}M${xm} ${gkYs[r + 1][i / 2]}H${x2}`);
+	}
+});
+
+// League: a ten-team top tier with relegation into a second tier.
+const lgRow = 17;
+const lgTop = 26;
+const lg2Top = 92;
+
+// Swiss: records branch round by round; the best records advance.
+const swCols = [8, 100, 192, 284];
+const swW = 76;
+const swH = 26;
+const swRounds = [
+	[{ y: 112, t: '0–0' }],
+	[
+		{ y: 72, t: '1–0' },
+		{ y: 152, t: '0–1' },
+	],
+	[
+		{ y: 42, t: '2–0' },
+		{ y: 112, t: '1–1' },
+		{ y: 182, t: '0–2' },
+	],
+	[
+		{ y: 26, t: '3–0' },
+		{ y: 84, t: '2–1' },
+		{ y: 142, t: '1–2' },
+		{ y: 200, t: '0–3' },
+	],
+];
+const swLinks: string[] = [];
+swRounds.slice(0, -1).forEach((nodes, r) => {
+	nodes.forEach((n, i) => {
+		const x1 = swCols[r] + swW;
+		const x2 = swCols[r + 1];
+		for (const next of [swRounds[r + 1][i], swRounds[r + 1][i + 1]]) {
+			swLinks.push(`M${x1} ${n.y}C${x1 + 10} ${n.y} ${x2 - 10} ${next.y} ${x2} ${next.y}`);
+		}
+	});
+});
+
+const formats = [
+	{
+		id: 'knockout',
+		name: 'Knockout',
+		title: 'Win or go home',
+		text: 'A single-elimination bracket. Every tie is decided on the night or over two legs.',
+		options: ['One or two legs with aggregate scores', 'Extra time and penalty shootouts', 'Optional third-place match'],
+	},
+	{
+		id: 'groups',
+		name: 'Groups + Knockout',
+		title: 'Groups first, then the bracket',
+		text: 'Round-robin groups decide who reaches the knockout, just like a World Cup.',
+		options: ['Random, seeded or manual draw', 'Wildcards for the best runners-up', 'Cross-seeded bracket with no early rematches'],
+	},
+	{
+		id: 'league',
+		name: 'League',
+		title: 'A full season',
+		text: 'Everyone plays everyone, home and away or once. The table decides the champion.',
+		options: ['Up to 10 tiers', 'Promotion and relegation', 'Optional playoff for the title'],
+	},
+	{
+		id: 'swiss',
+		name: 'Swiss',
+		title: 'Like the new Champions League',
+		text: 'A fixed number of rounds against opponents on a similar record. The best finishers move on to a knockout.',
+		options: ['Fixed number of rounds', 'Opponents matched by standing', 'Top finishers go to a knockout'],
+	},
+];
+---
+
+<div class="fs" data-format-switcher>
+	<div class="fs-tabs" role="tablist" aria-label="Tournament formats">
+		{
+			formats.map((f, i) => (
+				<button
+					type="button"
+					role="tab"
+					id={`fs-tab-${f.id}`}
+					aria-controls={`fs-panel-${f.id}`}
+					aria-selected={i === 0 ? 'true' : 'false'}
+					tabindex={i === 0 ? 0 : -1}
+				>
+					{f.name}
+				</button>
+			))
+		}
+	</div>
+
+	{
+		formats.map((f, i) => (
+			<div class="fs-panel" role="tabpanel" id={`fs-panel-${f.id}`} aria-labelledby={`fs-tab-${f.id}`} hidden={i !== 0}>
+				<div class="fs-figure">
+					<svg viewBox={`0 0 ${W} 222`} aria-hidden="true" class="fs-svg">
+						{f.id === 'knockout' && (
+							<g>
+								{koLinks.map((d) => (
+									<path class="ln" d={d} />
+								))}
+								{koHotLinks.map((d) => (
+									<path class="ln-hot" d={d} />
+								))}
+								{koRounds.map((ys, r) =>
+									ys.map((y, i) => {
+										const last = r === koRounds.length - 1;
+										const hot = koPath[r] === i;
+										return (
+											<g>
+												<rect
+													class={last ? 'win' : hot ? 'hi' : 'box'}
+													x={koCols[r]}
+													y={y - koH / 2}
+													width={koW}
+													height={koH}
+													rx="5"
+												/>
+												{last ? (
+													<path
+														class="cup"
+														d={`M${koCols[r] + 29} ${y - 5}h14v3a7 7 0 0 1 -14 0z M${koCols[r] + 36} ${y + 5}v2 M${koCols[r] + 32} ${y + 7}h8`}
+													/>
+												) : (
+													<g>
+														<circle class={hot ? 'dot-hot' : 'dot'} cx={koCols[r] + 11} cy={y} r="3.5" />
+														<rect class="bar" x={koCols[r] + 20} y={y - 2} width={hot ? 38 : 30} height="4" rx="2" />
+													</g>
+												)}
+											</g>
+										);
+									}),
+								)}
+							</g>
+						)}
+
+						{f.id === 'groups' && (
+							<g>
+								{groups.map((g) => (
+									<g>
+										<text class="lbl" x={g.x} y={g.y - 8}>
+											Group {g.label}
+										</text>
+										{[0, 1, 2, 3].map((r) => (
+											<g>
+												<rect
+													class={r < 2 ? 'hi' : 'box'}
+													x={g.x}
+													y={g.y + r * gRow}
+													width={gW}
+													height={gRow - 2}
+													rx="3"
+												/>
+												<rect class="bar" x={g.x + 8} y={g.y + r * gRow + 4.5} width={r < 2 ? 36 : 28} height="4" rx="2" />
+												<rect class="bar" x={g.x + gW - 16} y={g.y + r * gRow + 4.5} width="8" height="4" rx="2" />
+											</g>
+										))}
+									</g>
+								))}
+								{gkLinks.map((d) => (
+									<path class="ln" d={d} />
+								))}
+								{gkYs.map((ys, r) =>
+									ys.map((y) => {
+										const last = r === gkYs.length - 1;
+										return last ? (
+											<g>
+												<rect class="win" x={gkCols[r]} y={y - gkH / 2} width={gkW} height={gkH} rx="5" />
+												<path
+													class="cup"
+													d={`M${gkCols[r] + 15} ${y - 7}h14v4a7 7 0 0 1 -14 0z M${gkCols[r] + 22} ${y + 4}v3 M${gkCols[r] + 18} ${y + 8}h8`}
+												/>
+											</g>
+										) : (
+											<g>
+												<rect class="box" x={gkCols[r]} y={y - gkH / 2} width={gkW} height={gkH} rx="5" />
+												<rect class="bar" x={gkCols[r] + 8} y={y - 7} width="24" height="4" rx="2" />
+												<rect class="bar" x={gkCols[r] + 8} y={y + 3} width="20" height="4" rx="2" />
+											</g>
+										);
+									}),
+								)}
+							</g>
+						)}
+
+						{f.id === 'league' && (
+							<g>
+								<text class="lbl" x="8" y={lgTop - 9}>
+									Tier 1
+								</text>
+								{Array.from({ length: 10 }, (_, r) => (
+									<g>
+										<rect
+											class={r === 0 ? 'win-soft' : r < 4 ? 'hi' : r > 6 ? 'lo' : 'box'}
+											x="8"
+											y={lgTop + r * lgRow}
+											width="208"
+											height={lgRow - 2}
+											rx="3"
+										/>
+										<text class="num" x="20" y={lgTop + r * lgRow + 11}>
+											{r + 1}
+										</text>
+										<rect class="bar" x="36" y={lgTop + r * lgRow + 5.5} width={64 - r * 2} height="4" rx="2" />
+										<rect class="bar" x="188" y={lgTop + r * lgRow + 5.5} width="16" height="4" rx="2" />
+									</g>
+								))}
+								<text class="lbl" x="264" y={lg2Top - 9}>
+									Tier 2
+								</text>
+								{Array.from({ length: 6 }, (_, r) => (
+									<g>
+										<rect
+											class={r < 2 ? 'hi' : 'box'}
+											x="264"
+											y={lg2Top + r * lgRow}
+											width="104"
+											height={lgRow - 2}
+											rx="3"
+										/>
+										<text class="num" x="276" y={lg2Top + r * lgRow + 11}>
+											{r + 1}
+										</text>
+										<rect class="bar" x="290" y={lg2Top + r * lgRow + 5.5} width={40 - r * 2} height="4" rx="2" />
+									</g>
+								))}
+								<path class="ln-hot" d={`M222 ${lgTop + 8 * lgRow + 7}C244 ${lgTop + 8 * lgRow + 7} 240 ${lg2Top + 4 * lgRow} 258 ${lg2Top + 4 * lgRow}`} />
+								<path class="arrow" d={`M253 ${lg2Top + 4 * lgRow - 4}L258 ${lg2Top + 4 * lgRow}L253 ${lg2Top + 4 * lgRow + 4}`} />
+								<path class="ln-hot" d={`M258 ${lg2Top + lgRow / 2}C240 ${lg2Top + lgRow / 2} 244 ${lgTop + 6 * lgRow} 222 ${lgTop + 6 * lgRow}`} />
+								<path class="arrow" d={`M227 ${lgTop + 6 * lgRow - 4}L222 ${lgTop + 6 * lgRow}L227 ${lgTop + 6 * lgRow + 4}`} />
+							</g>
+						)}
+
+						{f.id === 'swiss' && (
+							<g>
+								{swLinks.map((d) => (
+									<path class="ln" d={d} />
+								))}
+								{swRounds.map((nodes, r) =>
+									nodes.map((n, i) => {
+										const advance = r === swRounds.length - 1 && i < 2;
+										return (
+											<g>
+												<rect
+													class={advance ? (i === 0 ? 'win' : 'hi') : 'box'}
+													x={swCols[r]}
+													y={n.y - swH / 2}
+													width={swW}
+													height={swH}
+													rx={swH / 2}
+												/>
+												<text class={advance && i === 0 ? 'rec rec-on' : 'rec'} x={swCols[r] + swW / 2} y={n.y + 4}>
+													{n.t}
+												</text>
+											</g>
+										);
+									}),
+								)}
+							</g>
+						)}
+					</svg>
+				</div>
+				<div class="fs-copy">
+					<h3>{f.title}</h3>
+					<p>{f.text}</p>
+					<ul>
+						{f.options.map((o) => (
+							<li>{o}</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		))
+	}
+	<p class="fs-more">Also included: double elimination, league + knockout, and custom formats you build stage by stage.</p>
+</div>
+
+<style>
+	.fs-tabs {
+		display: flex;
+		gap: 4px;
+		margin: 0 calc(var(--gutter) * -1) 32px;
+		padding: 0 var(--gutter);
+		overflow-x: auto;
+		scrollbar-width: none;
+		border-bottom: 1px solid var(--rule);
+	}
+	.fs-tabs::-webkit-scrollbar {
+		display: none;
+	}
+	.fs-tabs button {
+		flex: none;
+		position: relative;
+		min-height: 48px;
+		padding: 0 14px;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-weight: 500;
+		font-size: 1rem;
+		color: var(--muted);
+		cursor: pointer;
+		border-radius: 8px 8px 0 0;
+	}
+	.fs-tabs button:first-child {
+		padding-left: 0;
+	}
+	.fs-tabs button:hover {
+		color: var(--ink);
+	}
+	.fs-tabs button[aria-selected='true'] {
+		color: var(--ink);
+		font-weight: 600;
+	}
+	.fs-tabs button[aria-selected='true']::after {
+		content: '';
+		position: absolute;
+		left: 14px;
+		right: 14px;
+		bottom: -1px;
+		height: 3px;
+		border-radius: 3px 3px 0 0;
+		background: var(--brand);
+	}
+	.fs-tabs button:first-child[aria-selected='true']::after {
+		left: 0;
+	}
+	@media (min-width: 760px) {
+		.fs-tabs {
+			margin-left: 0;
+			margin-right: 0;
+			padding: 0;
+		}
+	}
+
+	.fs-panel {
+		display: grid;
+		gap: 32px;
+	}
+	.fs-panel[hidden] {
+		display: none;
+	}
+	@media (min-width: 900px) {
+		.fs-panel {
+			grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+			gap: 64px;
+			align-items: center;
+		}
+	}
+
+	.fs-figure {
+		padding: clamp(16px, 4vw, 40px);
+		border: 1px solid var(--rule);
+		border-radius: 20px;
+		background: var(--surface);
+	}
+
+	.fs-svg {
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.fs-svg :global(.ln) {
+		fill: none;
+		stroke: var(--rule);
+		stroke-width: 1.5;
+	}
+	.fs-svg :global(.ln-hot) {
+		fill: none;
+		stroke: var(--brand);
+		stroke-width: 2;
+	}
+	.fs-svg :global(.arrow) {
+		fill: none;
+		stroke: var(--brand);
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.fs-svg :global(.box) {
+		fill: var(--bg);
+		stroke: var(--rule);
+	}
+	.fs-svg :global(.hi) {
+		fill: var(--brand-soft);
+		stroke: var(--brand);
+		stroke-opacity: 0.5;
+	}
+	.fs-svg :global(.lo) {
+		fill: none;
+		stroke: var(--muted);
+		stroke-dasharray: 3 3;
+		stroke-opacity: 0.6;
+	}
+	.fs-svg :global(.win) {
+		fill: var(--brand);
+	}
+	.fs-svg :global(.win-soft) {
+		fill: var(--brand);
+		fill-opacity: 0.28;
+		stroke: var(--brand);
+	}
+	.fs-svg :global(.bar) {
+		fill: var(--muted);
+		opacity: 0.35;
+	}
+	.fs-svg :global(.dot) {
+		fill: var(--muted);
+		opacity: 0.45;
+	}
+	.fs-svg :global(.dot-hot) {
+		fill: var(--brand);
+	}
+	.fs-svg :global(.cup) {
+		fill: none;
+		stroke: var(--on-brand);
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.fs-svg :global(.lbl) {
+		fill: var(--muted);
+		font-size: 10px;
+		font-weight: 500;
+	}
+	.fs-svg :global(.num) {
+		fill: var(--muted);
+		font-size: 9px;
+		text-anchor: middle;
+	}
+	.fs-svg :global(.rec) {
+		fill: var(--ink);
+		font-size: 11px;
+		font-weight: 600;
+		text-anchor: middle;
+	}
+	.fs-svg :global(.rec-on) {
+		fill: var(--on-brand);
+	}
+
+	.fs-copy h3 {
+		margin: 0 0 12px;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: clamp(1.625rem, 2.6vw, 2rem);
+		line-height: 1.1;
+	}
+	.fs-copy p {
+		margin: 0 0 24px;
+		color: var(--muted);
+		max-width: 32em;
+	}
+	.fs-copy ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.fs-copy li {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px 0;
+		border-top: 1px solid var(--rule);
+		font-size: 0.9375rem;
+	}
+	.fs-copy li::before {
+		content: '';
+		flex: none;
+		width: 8px;
+		height: 8px;
+		border-radius: 2px;
+		background: var(--brand);
+	}
+
+	.fs-more {
+		margin: 40px 0 0;
+		font-size: 0.9375rem;
+		color: var(--muted);
+	}
+</style>
+
+<script>
+	for (const root of document.querySelectorAll<HTMLElement>('[data-format-switcher]')) {
+		const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+		const select = (tab: HTMLButtonElement, focus = false) => {
+			for (const t of tabs) {
+				const on = t === tab;
+				t.setAttribute('aria-selected', String(on));
+				t.tabIndex = on ? 0 : -1;
+				const panel = document.getElementById(t.getAttribute('aria-controls')!);
+				if (panel) panel.hidden = !on;
+			}
+			if (focus) tab.focus();
+			tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+		};
+		tabs.forEach((tab, i) => {
+			tab.addEventListener('click', () => select(tab));
+			tab.addEventListener('keydown', (e) => {
+				const move = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+				if (move) {
+					e.preventDefault();
+					select(tabs[(i + move + tabs.length) % tabs.length], true);
+				} else if (e.key === 'Home') {
+					e.preventDefault();
+					select(tabs[0], true);
+				} else if (e.key === 'End') {
+					e.preventDefault();
+					select(tabs[tabs.length - 1], true);
+				}
+			});
+		});
+	}
+</script>

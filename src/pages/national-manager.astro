@@ -1,12 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SiteNav from '../components/SiteNav.astro';
 import MoreApps from '../components/MoreApps.astro';
+import Phone from '../components/Phone.astro';
+import PlayButton from '../components/PlayButton.astro';
+
+const webAppUrl = 'https://invictus-national-manager.vercel.app/';
 
 const journey = [
 	{
 		title: 'Pick any nation',
-		text: 'All 211 FIFA members are open to you, from Spain to San Marino, seeded from the real FIFA ranking and each with its own pool of players.',
+		text: 'All 211 FIFA members are open, from Spain to San Marino, seeded from the real FIFA ranking with their own players.',
 	},
 	{
 		title: 'Call up your squad',
@@ -14,11 +17,11 @@ const journey = [
 	},
 	{
 		title: 'Set your tactics',
-		text: 'Choose from ten formations, pick your eleven on the pitch and set mentality, tempo and pressing for each match.',
+		text: 'Choose from ten formations, pick your eleven and set mentality, tempo and pressing for each match.',
 	},
 	{
 		title: 'Play every minute',
-		text: 'Follow matches live in text commentary with shots, xG, cards, injuries and substitutions, then extra time and kick-by-kick shootouts.',
+		text: 'Follow live commentary with shots, xG, cards, injuries and substitutions, through extra time and kick-by-kick shootouts.',
 	},
 ];
 
@@ -35,7 +38,7 @@ const screens = [
 	},
 	{
 		src: '/national-manager/screen-comps.webp',
-		title: 'A full international calendar',
+		title: 'The full international calendar',
 		text: 'Follow every competition in the world, live and coming up.',
 	},
 ];
@@ -47,19 +50,19 @@ const features = [
 	},
 	{
 		title: 'Continental and regional cups',
-		text: 'Euro, Copa América, AFCON, Asian Cup, Gold Cup, OFC Nations Cup, the Nations Leagues, the Finalissima, Arab Cup, Gulf Cup, ASEAN, SAFF, COSAFA and more.',
+		text: 'Euro, Copa América, AFCON, Asian Cup, Gold Cup, OFC Nations Cup, the Nations Leagues, Finalissima, Arab Cup, Gulf Cup, ASEAN, SAFF, COSAFA and more.',
 	},
 	{
 		title: 'Draws you can watch',
-		text: 'Pots, confederation limits and hosts, drawn live pot by pot, with placeholders for the places still being decided.',
+		text: 'Pots, confederation limits and hosts, drawn live pot by pot, with placeholders for places still to be decided.',
 	},
 	{
 		title: 'Your job on the line',
-		text: 'Board objectives for every competition, a confidence meter that results move, the sack when it runs out, and offers from other federations.',
+		text: 'Board objectives for every competition and a confidence meter that results move. Lose it and you’re sacked, or take an offer from another federation.',
 	},
 	{
 		title: 'A world that keeps going',
-		text: 'Players develop, decline and retire, youngsters come through each January, federations grow, and hosts are announced years ahead.',
+		text: 'Players develop, decline and retire, new talent comes through each January, and hosts are announced years ahead.',
 	},
 	{
 		title: 'Ranking and history',
@@ -69,112 +72,117 @@ const features = [
 ---
 
 <Layout
-	title="Invictus - National Manager"
-	description="Invictus National Manager — take charge of any of the 211 FIFA nations, call up your squad, set your tactics and lead them through qualifiers, continental cups and the World Cup."
+	title="Invictus National Manager: manage any national football team"
+	description="Take charge of any of the 211 FIFA nations. Call up your squad, set your tactics and lead your country through qualifiers, continental cups and the World Cup."
 	favicon="/national-manager/favicon.svg"
 	image="/national-manager/logo.png"
+	current="national-manager"
 >
-	<SiteNav current="national-manager" />
-
-	<main class="hero">
-		<div class="panel panel-primary">
-			<div class="panel-primary-content">
-				<p class="description">
-					Invictus National Manager <br /> take charge of your country and lead it through qualifiers, continental cups
-					and the World Cup.
+	<section class="hero">
+		<div class="wrap hero-grid">
+			<div class="hero-copy">
+				<p class="app-id">
+					<img src="/national-manager/logo.png" alt="" width="40" height="40" />
+					Invictus National Manager
 				</p>
-				<span class="cta cta-soon">
-					<img src="/google-play-store-icon.webp" alt="" width="20" height="20" />
-					<span>
-						<small>Coming soon</small>
-						Google Play
-					</span>
-				</span>
+				<h1 class="display">Take your country to the World Cup.</h1>
+				<p class="lead">
+					Manage any of the 211 FIFA nations through qualifiers, continental cups and World Cups, starting on the real
+					2026 calendar.
+				</p>
+				<div class="actions">
+					<PlayButton soon />
+					<a class="btn btn-secondary" href={webAppUrl}>Play in your browser</a>
+				</div>
+				<p class="note">Three save slots, stored on your device. No account needed.</p>
+			</div>
+			<div class="hero-phones">
+				<Phone
+					class="phone-front"
+					src="/national-manager/screen-home.webp"
+					alt="Home screen with the FIFA ranking, federation confidence and the next match"
+					eager
+				/>
 			</div>
 		</div>
+	</section>
 
-		<div class="panel panel-brand">
-			<div class="brand-row">
-				<img class="brand-mark" src="/national-manager/logo.png" alt="" />
-				<h1>Invictus <span>National Manager</span></h1>
+	<section class="section" aria-labelledby="journey-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="journey-title">From call-up to final whistle</h2>
+				<p class="lead">Every international window follows the same rhythm.</p>
 			</div>
-			<img
-				class="phone-shot"
-				src="/national-manager/screen-home.webp"
-				alt="National Manager home screen with the FIFA ranking, federation confidence and the next match"
-				width="600"
-				height="1298"
-			/>
-		</div>
-	</main>
-
-	<section class="section">
-		<h2>From call-up to final whistle</h2>
-		<div class="grid grid-4">
-			{
-				journey.map((j) => (
-					<div class="card">
-						<h3>{j.title}</h3>
-						<p>{j.text}</p>
-					</div>
-				))
-			}
+			<ol class="cols cols-4 steps">
+				{
+					journey.map((j) => (
+						<li>
+							<h3>{j.title}</h3>
+							<p>{j.text}</p>
+						</li>
+					))
+				}
+			</ol>
 		</div>
 	</section>
 
-	<section class="section section-alt">
-		<h2>Built for your phone</h2>
-		<div class="screens">
-			{
-				screens.map((s) => (
-					<figure>
-						<img class="phone-shot" src={s.src} alt="" width="600" height="1298" loading="lazy" />
-						<figcaption>
-							<strong>{s.title}</strong>
-							{s.text}
-						</figcaption>
-					</figure>
-				))
-			}
+	<section class="section" aria-labelledby="screens-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="screens-title">Built for your phone</h2>
+				<p class="strip-hint">Swipe to see more.</p>
+			</div>
+			<ul class="strip">
+				{
+					screens.map((s) => (
+						<li>
+							<Phone src={s.src} />
+							<div>
+								<h3>{s.title}</h3>
+								<p>{s.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</section>
 
-	<section class="section">
-		<h2>The whole international game</h2>
-		<p class="section-lead">
-			The career starts on 1 September 2026 on the real FIFA calendar, and every edition after that is played by the same
-			rules, so 2040 plays like 2028.
-		</p>
-		<div class="grid grid-3">
-			{
-				features.map((f) => (
-					<div class="card card-compact">
-						<h3>{f.title}</h3>
-						<p>{f.text}</p>
-					</div>
-				))
-			}
+	<section class="section" aria-labelledby="features-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="features-title">The whole international game</h2>
+				<p class="lead">
+					Your career starts on 1 September 2026. Every edition after that follows the same rules, so 2040 plays like 2028.
+				</p>
+			</div>
+			<dl class="features">
+				{
+					features.map((f) => (
+						<div>
+							<dt>{f.title}</dt>
+							<dd>{f.text}</dd>
+						</div>
+					))
+				}
+			</dl>
 		</div>
 	</section>
 
-	<section class="section section-alt cta-section">
-		<h2>Coming soon to Android</h2>
-		<p class="cta-text">Three save slots, stored on your device. No account needed.</p>
-		<span class="cta cta-large cta-soon">
-			<img src="/google-play-store-icon.webp" alt="" width="22" height="22" />
-			Coming soon to Google Play
-		</span>
+	<section class="closing" aria-labelledby="closing-title">
+		<div class="wrap">
+			<h2 class="display" id="closing-title">Coming soon to Android.</h2>
+			<div class="actions">
+				<PlayButton soon />
+				<a class="btn btn-secondary" href={webAppUrl}>Play in your browser</a>
+			</div>
+		</div>
 	</section>
 
 	<MoreApps
 		name="Invictus Tournament Maker"
-		text="Build and run your own football tournaments, leagues and knockout brackets. Free on Google Play."
+		text="Build and run your own football tournaments, leagues and brackets. Free on Google Play."
 		href="/"
 		logo="/favicon.svg"
 	/>
-
-	<footer class="footer">
-		<span>Invictus National Manager</span>
-		<span>&copy; {new Date().getFullYear()}</span>
-	</footer>
 </Layout>

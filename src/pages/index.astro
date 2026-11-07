@@ -1,144 +1,174 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SiteNav from '../components/SiteNav.astro';
 import MoreApps from '../components/MoreApps.astro';
+import Phone from '../components/Phone.astro';
+import PlayButton from '../components/PlayButton.astro';
+import FormatSwitcher from '../components/FormatSwitcher.astro';
 
 const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.orazchollaev.invictustournamentmaker';
+const webAppUrl = 'https://invictus-tournament-maker.vercel.app/';
 
-const formats = [
-	{
-		title: 'Knockout',
-		text: 'Single-elimination bracket with one or two-legged ties, aggregate scoring, penalty shootouts, and an optional third-place match.',
-	},
-	{
-		title: 'Group + Knockout',
-		text: 'Round-robin groups feed a knockout bracket, with automatic cross-seeding, wildcards, and no-rematch or random draw modes.',
-	},
-	{
-		title: 'League',
-		text: 'Full or half-length round-robin season, up to 10 tiers with promotion and relegation, plus an optional playoff to crown a champion.',
-	},
-	{
-		title: 'Swiss',
-		text: 'Champions League–style format: fixed rounds against opponents matched by standing, then the top finishers advance to a knockout.',
-	},
-];
-
-const playStyles = [
+const modes = [
 	{
 		title: 'Simulate',
-		text: 'Fill in scores yourself, or simulate a match, a matchday, or the whole tournament based on each team’s power rating. Tune Surprise Factor, Home Advantage, and Form to change how predictable results are.',
+		text: 'Enter scores yourself, or simulate one match, a matchday or the whole tournament from each team’s power rating. Surprise factor, home advantage and form decide how predictable it gets.',
 	},
 	{
 		title: 'Watch it live',
-		text: 'Play matches out minute by minute with goals, shots, xG, cards, injuries, and substitutions. Ties go to real extra time and a kick-by-kick penalty shootout.',
+		text: 'Play a match out minute by minute with goals, shots, xG, cards, injuries and substitutions, through to extra time and a kick-by-kick shootout.',
 	},
 	{
 		title: 'Manage a team',
-		text: 'Pick a team and run its season yourself: set formation and play style, choose your XI — or let the app auto-pick — and make live substitutions.',
+		text: 'Take one side through the tournament: pick the formation and style, choose your XI or let the app pick it, and make substitutions as the match unfolds.',
+	},
+];
+
+const screens = [
+	{
+		src: '/tournament-maker/screen-draw.webp',
+		title: 'A draw you can watch',
+		text: 'Pots and seeding, drawn into groups one team at a time.',
+	},
+	{
+		src: '/tournament-maker/screen-groups.webp',
+		title: 'Live tables',
+		text: 'Standings update with every result, with qualifying places marked.',
+	},
+	{
+		src: '/tournament-maker/screen-stats.webp',
+		title: 'Stats for every stage',
+		text: 'Follow each team’s position round by round, plus top scorers.',
 	},
 ];
 
 const features = [
-	{ title: 'Teams & players', text: 'Build rosters with colors, power ratings, and coaches; bulk-generate players from an editable name pool.' },
-	{ title: 'Multiple seasons', text: 'Run it back with New Season — random, seeded, or manual draws, with every season kept.' },
-	{ title: 'History & stats', text: 'Champions, all-time tables, biggest wins, title streaks, and per-team records across every season.' },
-	{ title: '15 languages', text: 'English, Turkish, German, French, Arabic, Spanish, Portuguese, Russian, Japanese, Korean, Thai, Vietnamese, Polish, Indonesian, Hindi.' },
-	{ title: 'Themes', text: 'Light, Dark, or a World Cup 2026 theme, with Classic or Double-Sided bracket layouts.' },
-	{ title: 'Export & import', text: 'Save all your teams and tournaments to a file and restore them anytime.' },
+	{ title: 'Ready-made teams', text: 'Load the World Cup, Champions League, top leagues and more in one tap, or browse datasets shared by other players.' },
+	{ title: 'Your own teams and players', text: 'Set colors, power ratings and coaches, and generate whole squads from an editable name pool.' },
+	{ title: 'Season after season', text: 'Start a new season with a random, seeded or manual draw. Every past season is kept.' },
+	{ title: 'History and records', text: 'Champions, all-time tables, biggest wins, title streaks and records for every team.' },
+	{ title: '15 languages', text: 'Including English, Turkish, Spanish, Portuguese, German, French, Arabic, Russian, Japanese and Hindi.' },
+	{ title: 'Back up anytime', text: 'Export your teams and tournaments to a file and restore them on any device.' },
 ];
 ---
 
 <Layout
-	title="Invictus - Tournament Maker"
-	description="Invictus Tournament Maker — build knockouts, groups, leagues and Swiss-style football tournaments, simulate or play matches live, and track history across seasons. Free on Google Play."
+	title="Invictus Tournament Maker: build football tournaments, leagues and brackets"
+	description="Build knockouts, group stages, leagues and Swiss-style football tournaments. Simulate results or watch matches live, and keep history across seasons. Free on Google Play and in your browser."
 	image="/bracket.png"
+	current="tournament-maker"
 >
-	<SiteNav current="tournament-maker" />
-
-	<main class="hero">
-		<div class="panel panel-primary">
-			<div class="panel-primary-content">
-				<p class="description">
-					Invictus Tournament Maker <br /> build and run your own football (soccer) tournaments, leagues, and knockout
-					brackets, right from your phone.
+	<section class="hero">
+		<div class="wrap hero-grid">
+			<div class="hero-copy">
+				<p class="app-id">
+					<img src="/favicon.svg" alt="" width="40" height="40" />
+					Invictus Tournament Maker
 				</p>
-				<a class="cta" href={playStoreUrl}>
-					<img src="/google-play-store-icon.webp" alt="" width="20" height="20" />
-					Get it on Google Play
-				</a>
+				<h1 class="display">Run your own football tournament.</h1>
+				<p class="lead">
+					Knockouts, group stages, leagues and Swiss formats. Simulate the results or watch every match live, then start the
+					next season.
+				</p>
+				<div class="actions">
+					<PlayButton href={playStoreUrl} />
+					<a class="btn btn-secondary" href={webAppUrl}>Open in browser</a>
+				</div>
+				<p class="note">Free, with no account needed. Your data stays on your device.</p>
+			</div>
+			<div class="hero-phones">
+				<Phone
+					class="phone-front"
+					src="/tournament-maker/screen-draw.webp"
+					alt="The draw ceremony placing World Cup teams into groups"
+					eager
+				/>
 			</div>
 		</div>
+	</section>
 
-		<div class="panel panel-brand">
-			<div class="brand-row">
-				<img class="brand-mark" src="/favicon.svg" alt="" />
-				<h1>Invictus <span>Tournament Maker</span></h1>
+	<section class="section" id="formats" aria-labelledby="formats-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="formats-title">Pick a format. The fixtures are ready in a minute.</h2>
+				<p class="lead">Choose your teams and a format. Invictus makes the draw, the fixtures and the bracket for you.</p>
 			</div>
-			<img class="bracket-shot" src="/bracket.png" alt="Invictus bracket screen" />
-		</div>
-	</main>
-
-	<section class="section">
-		<h2>One app, four tournament formats</h2>
-		<div class="grid grid-4">
-			{
-				formats.map((f) => (
-					<div class="card">
-						<h3>{f.title}</h3>
-						<p>{f.text}</p>
-					</div>
-				))
-			}
+			<FormatSwitcher />
 		</div>
 	</section>
 
-	<section class="section section-alt">
-		<h2>Play it your way</h2>
-		<div class="grid grid-3">
-			{
-				playStyles.map((p) => (
-					<div class="card">
-						<h3>{p.title}</h3>
-						<p>{p.text}</p>
-					</div>
-				))
-			}
+	<section class="section" aria-labelledby="modes-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="modes-title">Play it your way</h2>
+				<p class="lead">Decide how much of each match you want to see.</p>
+			</div>
+			<ul class="cols cols-3">
+				{
+					modes.map((m) => (
+						<li>
+							<h3>{m.title}</h3>
+							<p>{m.text}</p>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</section>
 
-	<section class="section">
-		<h2>Everything you need to run a competition</h2>
-		<div class="grid grid-3">
-			{
-				features.map((f) => (
-					<div class="card card-compact">
-						<h3>{f.title}</h3>
-						<p>{f.text}</p>
-					</div>
-				))
-			}
+	<section class="section" aria-labelledby="screens-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="screens-title">Built for your phone</h2>
+				<p class="strip-hint">Swipe to see more.</p>
+			</div>
+			<ul class="strip">
+				{
+					screens.map((s) => (
+						<li>
+							<Phone src={s.src} />
+							<div>
+								<h3>{s.title}</h3>
+								<p>{s.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</section>
 
-	<section class="section section-alt cta-section">
-		<h2>Free on Android — and works in your browser too</h2>
-		<p class="cta-text">All data is stored locally and survives page refreshes. No account needed.</p>
-		<a class="cta cta-large" href={playStoreUrl}>
-			<img src="/google-play-store-icon.webp" alt="" width="22" height="22" />
-			Get it on Google Play
-		</a>
+	<section class="section" aria-labelledby="features-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 class="h2" id="features-title">Everything else you’ll need</h2>
+			</div>
+			<dl class="features">
+				{
+					features.map((f) => (
+						<div>
+							<dt>{f.title}</dt>
+							<dd>{f.text}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</section>
+
+	<section class="closing" aria-labelledby="closing-title">
+		<div class="wrap">
+			<h2 class="display" id="closing-title">Your first tournament is a minute away.</h2>
+			<div class="actions">
+				<PlayButton href={playStoreUrl} />
+				<a class="btn btn-secondary" href={webAppUrl}>Open in browser</a>
+			</div>
+		</div>
 	</section>
 
 	<MoreApps
 		name="Invictus National Manager"
-		text="Take charge of any of the 211 FIFA nations and lead them through qualifiers, continental cups and the World Cup."
+		text="Take charge of any of the 211 FIFA nations and lead them to the World Cup."
 		href="/national-manager/"
 		logo="/national-manager/logo.png"
 	/>
-
-	<footer class="footer">
-		<span>Invictus Tournament Maker</span>
-		<span>&copy; {new Date().getFullYear()}</span>
-	</footer>
 </Layout>

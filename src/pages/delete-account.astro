@@ -1,45 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SiteNav from '../components/SiteNav.astro';
 
 const email = 'orazchollaev@gmail.com';
 const subject = encodeURIComponent('Invictus data deletion request');
-
-const steps = [
-	{
-		title: 'Email us from your Google account',
-		text: 'Send a deletion request from the email address of the Google account you signed in with, or tell us that address in the message. Use the button below.',
-	},
-	{
-		title: 'We delete your account and shared content',
-		text: 'We delete your Invictus account together with everything linked to it, including datasets you shared, and confirm by email within 30 days.',
-	},
-	{
-		title: 'Clear data on your device (optional)',
-		text: 'Open Android Settings, go to Apps, choose the Invictus app, tap Storage and then Clear data, or uninstall the app. This removes tournaments, teams and settings stored locally.',
-	},
-];
+const mailto = `mailto:${email}?subject=${subject}`;
 
 const data = [
 	{
 		title: 'Account data (Google sign-in)',
-		text: 'When you sign in with Google we store your Google account ID, name, email address and profile photo through Firebase Authentication. Kept until you ask us to delete the account, then erased within 30 days.',
+		text: 'When you sign in with Google we store your Google account ID, name, email address and profile photo through Firebase Authentication.',
+		kept: 'Until you ask us to delete the account, then erased within 30 days.',
 	},
 	{
 		title: 'Content you share',
-		text: 'Datasets (teams and players) you publish to the market, with their name, description and your account ID. Deleted together with your account. Copies other users already saved on their own devices stay on those devices.',
+		text: 'Datasets (teams and players) you publish to the market, with their name, description and your account ID.',
+		kept: 'Deleted together with your account. Copies other users already saved stay on their devices.',
 	},
 	{
 		title: 'Stored on your device only',
-		text: 'Tournaments, results, save slots, language and settings never leave your device. Clearing app data or uninstalling deletes them for good.',
+		text: 'Tournaments, results, save slots, language and settings never leave your device.',
+		kept: 'Until you clear the app’s data or uninstall it.',
 	},
 	{
 		title: 'Usage analytics',
-		text: 'Anonymous app events through Firebase Analytics, tied to a random app instance ID. Retained by Google Analytics for up to 14 months, then deleted automatically.',
+		text: 'Anonymous app events through Firebase Analytics, tied to a random app instance ID.',
+		kept: 'Up to 14 months in Google Analytics, then deleted automatically.',
 	},
 	{
 		title: 'Push token and advertising ID',
-		text: 'A Firebase Cloud Messaging token for notifications is invalidated when you uninstall the app. Google AdMob may use your advertising ID, which you can reset or delete in Android Settings under Google, Ads.',
+		text: 'A Firebase Cloud Messaging token for notifications. Google AdMob may use your advertising ID.',
+		kept: 'The token is invalidated when you uninstall. Reset or delete the advertising ID in Android Settings under Google, Ads.',
 	},
 ];
 ---
@@ -48,84 +38,165 @@ const data = [
 	title="Delete your data | Invictus"
 	description="How to delete your Invictus account and data, including your Google sign-in details and shared datasets."
 >
-	<SiteNav current="tournament-maker" />
+	<article class="wrap doc">
+		<header class="doc-head">
+			<h1 class="h2">Delete your Invictus data</h1>
+			<p class="lead">
+				For Invictus Tournament Maker and Invictus National Manager, by developer Oraz Chollaev. Tournament Maker lets you sign in
+				with Google to share datasets. National Manager has no accounts: its saves stay on your device.
+			</p>
+		</header>
 
-	<header class="page-head">
-		<h1>Delete your Invictus data</h1>
-		<p>Applies to Invictus Tournament Maker and Invictus National Manager (developer: Oraz Chollaev).</p>
-	</header>
+		<section aria-labelledby="how-title">
+			<h2 id="how-title">How to request deletion</h2>
+			<ol class="doc-steps">
+				<li>
+					<h3>Email us from your Google account</h3>
+					<p>
+						Send the request from the address you signed in with, or include that address in your message. We delete your account
+						and everything linked to it, including datasets you shared.
+					</p>
+					<a class="btn btn-primary" href={mailto}>Email a deletion request</a>
+					<p class="doc-small">Or write to {email} yourself.</p>
+				</li>
+				<li>
+					<h3>We confirm by email</h3>
+					<p>We reply and complete the deletion within 30 days.</p>
+				</li>
+				<li>
+					<h3>Clear data on your device (optional)</h3>
+					<p>
+						In Android Settings, open Apps, choose the Invictus app, then Storage and Clear data. Uninstalling works too. This
+						removes the tournaments, teams and settings stored on your phone.
+					</p>
+				</li>
+			</ol>
+		</section>
 
-	<section class="section">
-		<h2>Your account and your data</h2>
-		<p class="section-lead">
-			Invictus Tournament Maker lets you sign in with Google to share and download datasets. Invictus National Manager has no
-			accounts: its saves stay on your device. Request deletion below to remove your account and the data linked to it.
-		</p>
-	</section>
-
-	<section class="section section-alt">
-		<h2>How to request deletion</h2>
-		<div class="grid grid-3">
-			{
-				steps.map((s, i) => (
-					<div class="card card-compact">
-						<h3>
-							{i + 1}. {s.title}
-						</h3>
-						<p>{s.text}</p>
-					</div>
-				))
-			}
-		</div>
-		<p class="cta-text mail">
-			<a class="cta cta-large" href={`mailto:${email}?subject=${subject}`}>Email {email}</a>
-		</p>
-		<p class="cta-text">We reply within 30 days and delete the data you ask about.</p>
-	</section>
-
-	<section class="section">
-		<h2>What is stored and for how long</h2>
-		<div class="grid grid-3">
-			{
-				data.map((d) => (
-					<div class="card card-compact">
-						<h3>{d.title}</h3>
-						<p>{d.text}</p>
-					</div>
-				))
-			}
-		</div>
-	</section>
-
-	<footer class="footer">
-		<span>Invictus</span>
-		<span>&copy; {new Date().getFullYear()}</span>
-	</footer>
+		<section aria-labelledby="stored-title">
+			<h2 id="stored-title">What we store and for how long</h2>
+			<dl class="doc-data">
+				{
+					data.map((d) => (
+						<div>
+							<dt>{d.title}</dt>
+							<dd>
+								<p>{d.text}</p>
+								<p class="doc-kept">
+									<span>Kept:</span> {d.kept}
+								</p>
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+		</section>
+	</article>
 </Layout>
 
 <style>
-	.page-head {
-		background: #0b7264;
-		color: #eceeea;
-		text-align: center;
-		padding: 4.5rem 6vw 4rem;
+	.doc {
+		max-width: calc(760px + var(--gutter) * 2);
+		padding-top: 56px;
+		padding-bottom: 80px;
 	}
-	.page-head h1 {
-		color: #eceeea;
-		text-align: center;
-		font-size: clamp(1.8rem, 4vw, 2.6rem);
+	.doc-head {
+		display: grid;
+		gap: 20px;
+		padding-bottom: 48px;
+		border-bottom: 1px solid var(--rule);
 	}
-	.page-head p {
-		max-width: 60ch;
-		margin: 1rem auto 0;
-		font-size: 1.05rem;
-		line-height: 1.6;
-		opacity: 0.9;
+	.doc section {
+		padding: 48px 0;
 	}
-	.section-alt .cta-text {
-		text-align: center;
+	.doc section + section {
+		border-top: 1px solid var(--rule);
 	}
-	.mail {
-		margin-top: 2.5rem;
+	.doc h2:not(.h2) {
+		margin: 0 0 32px;
+		font-family: var(--font-display);
+		font-size: 1.75rem;
+		line-height: 1.1;
+	}
+	.doc h3 {
+		margin: 0 0 6px;
+		font-size: 1.125rem;
+		font-weight: 600;
+	}
+	.doc p {
+		margin: 0;
+	}
+
+	.doc-steps {
+		counter-reset: step;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 32px;
+	}
+	.doc-steps > li {
+		counter-increment: step;
+		position: relative;
+		padding-left: 52px;
+		display: grid;
+		gap: 8px;
+		justify-items: start;
+	}
+	.doc-steps > li::before {
+		content: counter(step);
+		position: absolute;
+		left: 0;
+		top: 0;
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 999px;
+		background: var(--brand);
+		color: var(--on-brand);
+		font-weight: 600;
+		font-size: 0.9375rem;
+	}
+	.doc-steps p {
+		color: var(--muted);
+	}
+	.doc-steps .btn {
+		margin-top: 8px;
+	}
+	.doc-small {
+		font-size: 0.9375rem;
+	}
+
+	.doc-data {
+		margin: 0;
+	}
+	.doc-data > div {
+		display: grid;
+		gap: 6px;
+		padding: 20px 0;
+		border-top: 1px solid var(--rule);
+	}
+	.doc-data dt {
+		font-weight: 600;
+	}
+	.doc-data dd {
+		margin: 0;
+		display: grid;
+		gap: 6px;
+		color: var(--muted);
+	}
+	.doc-kept span {
+		color: var(--ink);
+		font-weight: 500;
+	}
+	@media (min-width: 760px) {
+		.doc {
+			padding-top: 88px;
+		}
+		.doc-data > div {
+			grid-template-columns: 220px minmax(0, 1fr);
+			gap: 24px;
+		}
 	}
 </style>

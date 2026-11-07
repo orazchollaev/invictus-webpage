@@ -1,0 +1,25 @@
+---
+interface Props {
+	href?: string;
+	soon?: boolean;
+}
+
+const { href, soon = false } = Astro.props;
+---
+
+{
+	soon ? (
+		<span class="btn btn-play" aria-disabled="true">
+			<img src="/google-play-store-icon.webp" alt="" width="20" height="20" />
+			<span class="two-line">
+				<small>Coming soon</small>
+				Google Play
+			</span>
+		</span>
+	) : (
+		<a class="btn btn-primary btn-play" href={href}>
+			<img src="/google-play-store-icon.webp" alt="" width="20" height="20" />
+			Get it on Google Play
+		</a>
+	)
+}

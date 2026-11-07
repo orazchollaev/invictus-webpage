@@ -1,30 +1,34 @@
 ---
 interface Props {
-	current: 'tournament-maker' | 'national-manager';
+	current?: 'tournament-maker' | 'national-manager';
 }
 
 const { current } = Astro.props;
 
 const apps = [
-	{ id: 'tournament-maker', label: 'Tournament Maker', href: '/', icon: '/favicon.svg' },
-	{ id: 'national-manager', label: 'National Manager', href: '/national-manager/', icon: '/national-manager/logo.png' },
+	{ id: 'tournament-maker', short: 'Tournament', long: 'Maker', href: '/', icon: '/favicon.svg' },
+	{ id: 'national-manager', short: 'National', long: 'Manager', href: '/national-manager/', icon: '/national-manager/logo.png' },
 ];
 ---
 
-<header class="site-nav">
-	<a class="site-nav-brand" href="/">Invictus</a>
-	<nav aria-label="Invictus apps">
-		{
-			apps.map((app) => (
-				<a
-					class:list={['site-nav-link', { active: app.id === current }]}
-					href={app.href}
-					aria-current={app.id === current ? 'page' : undefined}
-				>
-					<img src={app.icon} alt="" width="22" height="22" />
-					<span>{app.label}</span>
-				</a>
-			))
-		}
-	</nav>
+<header class="nav">
+	<div class="wrap nav-inner">
+		<a class="nav-brand" href="/">Invictus</a>
+		<nav aria-label="Apps">
+			<ul class="nav-links">
+				{
+					apps.map((app) => (
+						<li>
+							<a href={app.href} aria-current={app.id === current ? 'page' : undefined}>
+								<img src={app.icon} alt="" width="22" height="22" />
+								<span>
+									{app.short} <span class="long">{app.long}</span>
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</div>
 </header>
